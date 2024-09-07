@@ -1,5 +1,86 @@
 {% extends "base.html" %}
 
+{% block style %}
+    <style>
+        /* General button styling */
+        .control-button {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            text-align: center;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .control-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Flexbox container for button pairs */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-group {
+            margin-bottom: 20px;
+        }
+    </style>
+{% endblock style %}
+
 {% block content %}
-<h2>Hello, world, this is the index page of Automatica Sud website.</h2>
+    <div class="control-panel">
+        <!-- Base control buttons -->
+        <div class="button-group">
+            <h3>Base Control</h3>
+            <button class="control-button" onclick="sendCommand('rotate_left')">Rotate Left</button>
+            <button class="control-button" onclick="sendCommand('rotate_right')">Rotate Right</button>
+        </div>
+
+        <!-- Shoulder control buttons -->
+        <div class="button-group">
+            <h3>Shoulder Control</h3>
+            <button class="control-button" onclick="sendCommand('shoulder_up')">Shoulder Up</button>
+            <button class="control-button" onclick="sendCommand('shoulder_down')">Shoulder Down</button>
+        </div>
+
+        <!-- Elbow control buttons -->
+        <div class="button-group">
+            <h3>Elbow Control</h3>
+            <button class="control-button" onclick="sendCommand('elbow_up')">Elbow Up</button>
+            <button class="control-button" onclick="sendCommand('elbow_down')">Elbow Down</button>
+        </div>
+
+        <!-- Claw control buttons -->
+        <div class="button-group">
+            <h3>Claw Control</h3>
+            <button class="control-button" onclick="sendCommand('open_claw')">Open Claw</button>
+            <button class="control-button" onclick="sendCommand('close_claw')">Close Claw</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript function to send AJAX requests for controlling the robotic arm
+        function sendCommand(action) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/robot/', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');  // Ensure CSRF token is sent in Django
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    console.log('Command sent:', action);
+                }
+            };
+
+            xhr.send('action=' + action);
+        }
+    </script>
 {% endblock content %}
+
