@@ -1,14 +1,12 @@
-from django.shortcuts import render
-
-# views.py
 import serial
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return render(request, 'index.html')
 
-@csrf_exempt  # Disable CSRF for testing; enable it properly in production
+@csrf_exempt
 def control_robotic_arm(request):
     if request.method == 'POST':
         action = request.POST.get('action')
