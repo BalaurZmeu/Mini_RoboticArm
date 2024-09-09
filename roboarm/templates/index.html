@@ -11,36 +11,44 @@
         <div class="button-group">
             <h3>Base Control</h3>
             <button class="control-button" onclick="sendCommand('rotate_left')">
-              Rotate Left</button>
+              <img src="{% static 'img/buttons/base_left.png' %}">
+            </button>
             <button class="control-button" onclick="sendCommand('rotate_right')">
-              Rotate Right</button>
+              <img src="{% static 'img/buttons/base_right.png' %}">
+            </button>
         </div>
 
         <!-- Shoulder control buttons -->
         <div class="button-group">
             <h3>Shoulder Control</h3>
             <button class="control-button" onclick="sendCommand('shoulder_up')">
-              Shoulder Up</button>
+              <img src="{% static 'img/buttons/shoulder_left.png' %}">
+            </button>
             <button class="control-button" onclick="sendCommand('shoulder_down')">
-              Shoulder Down</button>
+              <img src="{% static 'img/buttons/shoulder_right.png' %}">
+            </button>
         </div>
 
         <!-- Elbow control buttons -->
         <div class="button-group">
             <h3>Elbow Control</h3>
             <button class="control-button" onclick="sendCommand('elbow_up')">
-              Elbow Up</button>
+              <img src="{% static 'img/buttons/elbow_up.png' %}">
+            </button>
             <button class="control-button" onclick="sendCommand('elbow_down')">
-              Elbow Down</button>
+              <img src="{% static 'img/buttons/elbow_down.png' %}">
+            </button>
         </div>
 
         <!-- Claw control buttons -->
         <div class="button-group">
             <h3>Claw Control</h3>
             <button class="control-button" onclick="sendCommand('open_claw')">
-              Open Claw</button>
+              <img src="{% static 'img/buttons/claw_open.png' %}">
+            </button>
             <button class="control-button" onclick="sendCommand('close_claw')">
-              Close Claw</button>
+              <img src="{% static 'img/buttons/claw_close.png' %}">
+            </button>
         </div>
     </div>
 {% endblock content %}
