@@ -1,72 +1,57 @@
-        /* General page layout */
-        body {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
+/* General page layout */
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 
-        /* Video section at the top */
-        .video-section {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f1f1f1;
-        }
+/* Video section at the top */
+.video-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f1f1;
+}
 
-        .video-section video {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: cover;
-        }
+.video-section video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
 
-        /* Buttons section at the bottom */
-        .control-panel {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            background-color: #333;
-            padding: 10px;
-            height: 30vh; /* Reserve 30% of the screen for buttons */
-        }
+/* Buttons section at the bottom */
+.control-panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    padding: 5px;
+    height: 25vh; /* Reserve 25% of the screen for buttons */
+}
 
-        .control-button {
-            width: 60px; /* Button width */
-            height: 60px; /* Button height (same as width for round buttons) */
-            border-radius: 50%; /* Make buttons round */
-            margin: 10px; /* Space between buttons */
-            background-color: #007BFF;
-            color: white;
-            font-size: 12px;
-            border: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.control-button {
+    width: 50px; /* Button width */
+    height: 50px; /* Button height (same as width for round buttons) */
+    border-radius: 50%; /* Make buttons round */
+    margin: 10px; /* Space between buttons */
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
 
-        .control-button:hover {
-            background-color: #0056b3;
-        }
-        
-        .control-button:active {
-            background-color: green;
-        }
+.control-button:hover {
+    background-color: #0056b3;
+}
 
-        /* Mobile specific adjustments */
-        @media (max-width: 600px) {
-            .control-panel {
-                height: 25vh; /* Use less height on mobile */
-                padding: 5px;
-            }
+.control-button:active {
+    background-color: green;
+}
 
-            .control-button {
-                width: 50px; /* Slightly smaller buttons for mobile */
-                height: 50px;
-                margin: 5px;
-                font-size: 10px;
-            }
-        }
