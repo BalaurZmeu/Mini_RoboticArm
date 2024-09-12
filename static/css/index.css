@@ -37,7 +37,7 @@ body {
     height: 50px; /* Button height (same as width for round buttons) */
     border-radius: 50%; /* Make buttons round */
     margin: 10px; /* Space between buttons */
-    background-color: #007BFF;
+    background-color: #06D001;
     color: white;
     border: none;
     display: flex;
@@ -48,10 +48,10 @@ body {
 }
 
 .control-button:hover {
-    background-color: #0056b3;
+    background-color: #059212;
 }
 
 .control-button:active {
-    background-color: green;
+    background-color: #9BEC00;
 }
 

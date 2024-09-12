@@ -7,7 +7,7 @@ name = "pypi"
 django = "*"
 python-decouple = "*"
 psycopg2-binary = "*"
-pyserial = "*"
+requests = "*"
 
 [dev-packages]
 
