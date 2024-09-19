@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 # IP address of the ESP8266 board
-ESP8266_IP = 'http://192.168.1.100'
+ESP8266_IP = 'http://192.168.0.102'
 
 
 def index(request):
