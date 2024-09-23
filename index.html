@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1,
+    shrink-to-fit=no">
+<!--  <link rel="icon" type="image/x-icon" 
+  href="{% static 'img/favicon.png' %}"> -->
+<title>Robot</title>
+
+<style>
+/* General page layout */
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Buttons section at the bottom */
+.control-panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.control-button {
+    width: 50px; /* Button width */
+    height: 50px; /* Button height */
+    border-radius: 50%; /* Make buttons round */
+    margin: 10px; /* Space between buttons */
+    background-color: #06D001;
+    color: white;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.control-button:hover {
+    background-color: #059212;
+}
+
+.control-button:active {
+    background-color: #9BEC00;
+}
+
+</style>
+</head>
+
+<body>
+<div class="video-section">
+  <video id="video-stream" autoplay>
+    <!-- Video stream here -->
+  </video>
+</div>
+
+<div class="control-panel">
+  <table>
+    <tr> <!-- First row of buttons -->
+      
+      <!-- Base control buttons -->
+      <td>
+        <button class="control-button" onclick="sendCommand('rotate_left')">
+          <img src="{% static 'img/buttons/base_left.png' %}">
+        </button>
+      </td>
+      <td>
+        <button class="control-button" onclick="sendCommand('rotate_right')">
+          <img src="{% static 'img/buttons/base_right.png' %}">
+        </button>
+      </td>
+      
+      <!-- Shoulder control buttons -->
+      <td>
+        <button class="control-button" onclick="sendCommand('shoulder_up')">
+          <img src="{% static 'img/buttons/shoulder_left.png' %}">
+        </button>
+      </td>
+      <td>
+        <button class="control-button" onclick="sendCommand('shoulder_down')">
+          <img src="{% static 'img/buttons/shoulder_right.png' %}">
+        </button>
+      </td>
+    </tr>
+    
+    <tr> <!-- Second row of buttons -->
+
+      <!-- Elbow control buttons -->
+      <td>
+        <button class="control-button" onclick="sendCommand('elbow_up')">
+          <img src="{% static 'img/buttons/elbow_up.png' %}">
+        </button>
+      </td>
+      <td>
+        <button class="control-button" onclick="sendCommand('elbow_down')">
+          <img src="{% static 'img/buttons/elbow_down.png' %}">
+        </button>
+      </td>
+
+      <!-- Claw control buttons -->
+      <td>
+        <button class="control-button" onclick="sendCommand('open_claw')">
+          <img src="{% static 'img/buttons/claw_open.png' %}">
+        </button>
+      </td>
+      <td>
+        <button class="control-button" onclick="sendCommand('close_claw')">
+          <img src="{% static 'img/buttons/claw_close.png' %}">
+        </button>
+      </td>
+    </tr>
+  </table>
+  <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+</div>
+
+
+<script>
+
+console.log('JavaScript file loaded');
+
+/***************************************************************************/
+
+// Function to GET csrftoken from Cookie
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();  // Use native JavaScript trim
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue =
+                  decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+var csrftoken = getCookie('csrftoken');
+
+/***************************************************************************/
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+/***************************************************************************/
+
+function sendCommand(action) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/robot/', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader('X-CSRFToken', csrftoken);  // Fetch CSRF token
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      console.log('Command sent:', action);
+      if (xhr.status === 200) {
+        console.log('Success:', xhr.responseText);
+      } else {
+        console.log('Error:', xhr.status, xhr.responseText);
+      }
+    }
+  };
+
+  xhr.send('action=' + action);
+}
+
+</script>
+</body>
+</html>
+
