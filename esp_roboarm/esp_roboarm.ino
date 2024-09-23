@@ -1,4 +1,5 @@
 #include <ESP8266WiFi.h>
+#include <ESP8266mDNS.h>
 
 #define GREEN_LED 16
 #define RED_LED 4
@@ -28,10 +29,16 @@ void setup() {
   }
   server.begin();
   Serial.println("Server started");
+  
+  if (MDNS.begin("robot")) { // Set the mDNS name to "robotic-arm"
+    Serial.println("mDNS responder started");
+  }
 }
 
 void loop() {
   WiFiClient client = server.available();
+  MDNS.update(); // Update the mDNS service
+
   if (client) {
     String request = client.readStringUntil('\r');
     client.flush();
@@ -41,8 +48,22 @@ void loop() {
       client.print(
         "HTTP/1.1 200 OK\r\n"
         "Content-Type: text/html\r\n\r\n"
-        "<html><body>"
-        "<h1>Robotic Arm Control</h1>"
+        "<!DOCTYPE html><html lang=\"en\"><head>"
+        "<meta name=\"viewport\" content=\"width=device-width,"
+        "initial-scale=1, shrink-to-fit=no\">"
+        "<meta charset=\"utf-8\"><title>Mini Robotic Arm</title>"
+        "<style> body {margin: 0; display: flex;"
+        "flex-direction: column; height: 100vh;}"
+        ".control-panel {display: flex; flex-wrap: wrap;"
+        "justify-content: center; align-items: center; padding: 5px;}"
+        ".control-button {width: 150px; height: 150px;"
+        "border-radius: 50%; margin: 10px; background-color: #06D001;"
+        "color: black; border: none; display: flex;"
+        "justify-content: center; align-items: center; cursor: pointer;"
+        "transition: background-color 0.1s;}"
+        ".control-button:hover {background-color: #059212;}"
+        ".control-button:active {background-color: #9BEC00;}</style>"
+        "</head><body><h1>Robotic Arm Control</h1>"
         "<button onclick=\"sendCommand('rotate_left')\">Rotate Left</button>"
         "<button onclick=\"sendCommand('rotate_right')\">Rotate Right</button>"
         "<button onclick=\"sendCommand('open_claw')\">Open Claw</button>"
