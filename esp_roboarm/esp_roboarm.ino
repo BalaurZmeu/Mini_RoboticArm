@@ -67,28 +67,36 @@ void loop() {
         "</head><body><h1>Robotic Arm Control</h1>"
         "<div class=\"ctrl-pnl\"><table>"
         "<tr><td><button class=\"ctrl-btn\""
-        "onclick=\"sendCommand('rotate_left')\">"
+        "onmousedown=\"sendCommand('rotate_left_on')\" "
+        "onmouseup=\"sendCommand('rotate_left_off')\">"
         "Rotate Left</button></td>"
         "<td><button class=\"ctrl-btn\""
-        "onclick=\"sendCommand('rotate_right')\">"
+        "onmousedown=\"sendCommand('rotate_right_on')\" "
+        "onmouseup=\"sendCommand('rotate_right_off')\">"
         "Rotate Right</button></td></tr>"
         "<tr><td><button class=\"ctrl-btn\""
-        "onclick=\"sendCommand('shoulder_fwd')\">"
+        "onmousedown=\"sendCommand('shoulder_fwd_on')\" "
+        "onmouseup=\"sendCommand('shoulder_fwd_off')\">"
         "Shoulder Fwd</button></td>"
         "<td><button class=\"ctrl-btn\""
-        "onclick=\"sendCommand('shoulder_bkd')\">"
+        "onmousedown=\"sendCommand('shoulder_bkd_on')\" "
+        "onmouseup=\"sendCommand('shoulder_bkd_off')\">"
         "Shoulder Bkd</button></td></tr>"
         "<tr><td><button class=\"ctrl-btn\""
-        "onclick=\"sendCommand('elbow_up')\">"
+        "onmousedown=\"sendCommand('elbow_up_on')\" "
+        "onmouseup=\"sendCommand('elbow_up_off')\">"
         "Elbow Up</button></td>"
         "<td><button class=\"ctrl-btn\""
-        "onclick=\"sendCommand('elbow_down')\">"
+        "onmousedown=\"sendCommand('elbow_down_on')\" "
+        "onmouseup=\"sendCommand('elbow_down_off')\">"
         "Elbow Down</button></td></tr>"
         "<tr><td><button class=\"ctrl-btn\""
-        "onclick=\"sendCommand('open_claw')\">"
+        "onmousedown=\"sendCommand('open_claw_on')\" "
+        "onmouseup=\"sendCommand('open_claw_off')\">"
         "Open Claw</button></td>"
         "<td><button class=\"ctrl-btn\""
-        "onclick=\"sendCommand('close_claw')\">"
+        "onmousedown=\"sendCommand('close_claw_on')\" "
+        "onmouseup=\"sendCommand('close_claw_off')\">"
         "Close Claw</button></td></tr>"
         "</table></div>"
         "<script>"
@@ -101,25 +109,60 @@ void loop() {
       );
     }
 
-    // Servo control logic based on button pressed
-    if (request.indexOf("/rotate_left") != -1) {
+    // While the robotic arm isn't assembled, test the code with LEDs
+    if (request.indexOf("/rotate_left_on") != -1) {
+      digitalWrite(GREEN_LED, HIGH); // Turn LED ON while pressed
+    }
+    if (request.indexOf("/rotate_left_off") != -1) {
+      digitalWrite(GREEN_LED, LOW); // Turn LED OFF when released
+    }
+    
+    if (request.indexOf("/rotate_right_on") != -1) {
       digitalWrite(GREEN_LED, HIGH);
-      delay(1000);
+    }
+    if (request.indexOf("/rotate_right_off") != -1) {
       digitalWrite(GREEN_LED, LOW);
     }
-    if (request.indexOf("/rotate_right") != -1) {
+
+    if (request.indexOf("/shoulder_fwd_on") != -1) {
       digitalWrite(RED_LED, HIGH);
-      delay(1000);
+    }
+    if (request.indexOf("/shoulder_fwd_off") != -1) {
       digitalWrite(RED_LED, LOW);
     }
-    if (request.indexOf("/open_claw") != -1) {
+
+    if (request.indexOf("/shoulder_bkd_on") != -1) {
+      digitalWrite(RED_LED, HIGH);
+    }
+    if (request.indexOf("/shoulder_bkd_off") != -1) {
+      digitalWrite(RED_LED, LOW);
+    }
+
+    if (request.indexOf("/elbow_up_on") != -1) {
       digitalWrite(BLUE_LED, HIGH);
-      delay(1000);
+    }
+    if (request.indexOf("/elbow_up_off") != -1) {
       digitalWrite(BLUE_LED, LOW);
     }
-    if (request.indexOf("/close_claw") != -1) {
+
+    if (request.indexOf("/elbow_down_on") != -1) {
+      digitalWrite(BLUE_LED, HIGH);
+    }
+    if (request.indexOf("/elbow_down_off") != -1) {
+      digitalWrite(BLUE_LED, LOW);
+    }
+
+    if (request.indexOf("/open_claw_on") != -1) {
       digitalWrite(YELLOW_LED, HIGH);
-      delay(1000);
+    }
+    if (request.indexOf("/open_claw_off") != -1) {
+      digitalWrite(YELLOW_LED, LOW);
+    }
+
+    if (request.indexOf("/close_claw_on") != -1) {
+      digitalWrite(YELLOW_LED, HIGH);
+    }
+    if (request.indexOf("/close_claw_off") != -1) {
       digitalWrite(YELLOW_LED, LOW);
     }
   }
