@@ -4,16 +4,18 @@
 
 class CustomServo : public Servo {
   public:
-    int startPoint;  // Custom property
-
-    CustomServo() : startPoint(90) {}  // Initialize startPoint to 90 by default
+    // Custom properties
+    int minVal;
+    int maxVal;
+    // Initialize startPoint to 90 by default
+    CustomServo() : minVal(90) {}
 };
 
 // Servo motor objects
-CustomServo baseServo;
-CustomServo shoulderServo;
-CustomServo elbowServo;
-CustomServo clawServo;
+CustomServo base;
+CustomServo shoulder;
+CustomServo elbow;
+CustomServo claw;
 
 const char* ssid = "Tenda_1A5A60"; // name of your WiFi network
 const char* password = "balaur20"; // password to your WiFi network
@@ -21,14 +23,10 @@ const char* password = "balaur20"; // password to your WiFi network
 WiFiServer server(80);
 
 void setup() {
-  pinMode(GREEN_LED, OUTPUT);
-  pinMode(RED_LED, OUTPUT);
-  pinMode(BLUE_LED, OUTPUT);
-  pinMode(YELLOW_LED, OUTPUT);
-  digitalWrite(GREEN_LED, LOW);
-  digitalWrite(RED_LED, LOW);
-  digitalWrite(BLUE_LED, LOW);
-  digitalWrite(YELLOW_LED, LOW);
+  base.attach(2);
+  shoulder.attach(4);
+  elbow.attach(12);
+  claw.attach(16);
   
   Serial.begin(115200);
   
