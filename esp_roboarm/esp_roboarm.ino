@@ -1,10 +1,19 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
+#include <Servo.h>
 
-#define GREEN_LED 16
-#define RED_LED 4
-#define BLUE_LED 2
-#define YELLOW_LED 12
+class CustomServo : public Servo {
+  public:
+    int startPoint;  // Custom property
+
+    CustomServo() : startPoint(90) {}  // Initialize startPoint to 90 by default
+};
+
+// Servo motor objects
+CustomServo baseServo;
+CustomServo shoulderServo;
+CustomServo elbowServo;
+CustomServo clawServo;
 
 const char* ssid = "Tenda_1A5A60"; // name of your WiFi network
 const char* password = "balaur20"; // password to your WiFi network
