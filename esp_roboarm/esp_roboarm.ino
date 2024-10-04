@@ -7,8 +7,6 @@ class CustomServo : public Servo {
     // Custom properties
     int minVal;
     int maxVal;
-    // Initialize startPoint to 90 by default
-    CustomServo() : minVal(90) {}
 };
 
 // Servo motor objects
@@ -28,6 +26,15 @@ void setup() {
   elbow.attach(12);
   claw.attach(16);
   
+  base.minVal = 25;
+  base.maxVal = 110;
+  shoulder.minVal = 25;
+  shoulder.maxVal = 110;
+  elbow.minVal = 25;
+  elbow.maxVal = 110;
+  claw.minVal = 25;
+  claw.maxVal = 110;
+  
   Serial.begin(115200);
   
   WiFi.begin(ssid, password);
@@ -43,6 +50,20 @@ void setup() {
     Serial.println("mDNS responder started");
   }
 }
+
+void moveServo(servoObj, direction) {
+  if direction == "clockwise" {
+    while (servoObj.read() < servoObj.maxVal) {
+      servoObj.write(currVal);
+      currVal += stepVal;
+    }
+  } else if direction == "counterClockwise" {
+    while (servoObj.read() > servoObj.minVal) {
+      servoObj.write(currVal);
+      currVal -= stepVal;
+    }
+  }
+} // end moveServo
 
 void loop() {
   WiFiClient client = server.available();
@@ -138,76 +159,59 @@ void loop() {
       );
     }
 
-    // While the robotic arm isn't assembled, test the code with LEDs
     if (request.indexOf("/rotate_left_on") != -1) {
-      digitalWrite(GREEN_LED, HIGH); // Turn LED ON while pressed
       Serial.write("rotate_left_on\n");
     }
     if (request.indexOf("/rotate_left_off") != -1) {
-      digitalWrite(GREEN_LED, LOW); // Turn LED OFF when released
       Serial.write("rotate_left_off\n");
     }
     
     if (request.indexOf("/rotate_right_on") != -1) {
-      digitalWrite(GREEN_LED, HIGH);
       Serial.write("rotate_right_on\n");
     }
     if (request.indexOf("/rotate_right_off") != -1) {
-      digitalWrite(GREEN_LED, LOW);
       Serial.write("rotate_right_off\n");
     }
 
     if (request.indexOf("/shoulder_fwd_on") != -1) {
-      digitalWrite(RED_LED, HIGH);
       Serial.write("shoulder_fwd_on\n");
     }
     if (request.indexOf("/shoulder_fwd_off") != -1) {
-      digitalWrite(RED_LED, LOW);
       Serial.write("shoulder_fwd_off\n");
     }
 
     if (request.indexOf("/shoulder_bkd_on") != -1) {
-      digitalWrite(RED_LED, HIGH);
       Serial.write("shoulder_bkd_on\n");
     }
     if (request.indexOf("/shoulder_bkd_off") != -1) {
-      digitalWrite(RED_LED, LOW);
       Serial.write("shoulder_bkd_off\n");
     }
 
     if (request.indexOf("/elbow_up_on") != -1) {
-      digitalWrite(BLUE_LED, HIGH);
       Serial.write("elbow_up_on\n");
     }
     if (request.indexOf("/elbow_up_off") != -1) {
-      digitalWrite(BLUE_LED, LOW);
       Serial.write("elbow_up_off\n");
     }
 
     if (request.indexOf("/elbow_down_on") != -1) {
-      digitalWrite(BLUE_LED, HIGH);
       Serial.write("elbow_down_on\n");
     }
     if (request.indexOf("/elbow_down_off") != -1) {
-      digitalWrite(BLUE_LED, LOW);
       Serial.write("elbow_down_off\n");
     }
 
     if (request.indexOf("/open_claw_on") != -1) {
-      digitalWrite(YELLOW_LED, HIGH);
       Serial.write("open_claw_on\n");
     }
     if (request.indexOf("/open_claw_off") != -1) {
-      digitalWrite(YELLOW_LED, LOW);
       Serial.write("open_claw_off\n");
     }
 
     if (request.indexOf("/close_claw_on") != -1) {
-      digitalWrite(YELLOW_LED, HIGH);
       Serial.write("close_claw_on\n");
     }
     if (request.indexOf("/close_claw_off") != -1) {
-      digitalWrite(YELLOW_LED, LOW);
       Serial.write("close_claw_off\n");
     }
   }
