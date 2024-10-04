@@ -2,6 +2,12 @@
 #include <ESP8266mDNS.h>
 #include <Servo.h>
 
+// Declaring constants
+#define DELAY 50
+#define STEP 1
+
+// Custom class that inherits from Servo
+// and has custom properties
 class CustomServo : public Servo {
   public:
     // Custom properties
@@ -52,15 +58,25 @@ void setup() {
 }
 
 void moveServo(servoObj, direction) {
-  if direction == "clockwise" {
+  if direction == "positive" {
     while (servoObj.read() < servoObj.maxVal) {
       servoObj.write(currVal);
-      currVal += stepVal;
+      currVal += STEP;
+      delay(DELAY);
+      if (request.indexOf("/stop") != -1) {
+        Serial.println("stop");
+        break;
+      }
     }
-  } else if direction == "counterClockwise" {
+  } else if direction == "negative" {
     while (servoObj.read() > servoObj.minVal) {
       servoObj.write(currVal);
-      currVal -= stepVal;
+      currVal -= STEP;
+      delay(DELAY);
+      if (request.indexOf("/stop") != -1) {
+        Serial.println("stop");
+        break;
+      }
     }
   }
 } // end moveServo
@@ -159,60 +175,36 @@ void loop() {
       );
     }
 
-    if (request.indexOf("/rotate_left_on") != -1) {
-      Serial.write("rotate_left_on\n");
-    }
-    if (request.indexOf("/rotate_left_off") != -1) {
-      Serial.write("rotate_left_off\n");
+    if (request.indexOf("/rotate_left") != -1) {
+      Serial.println("rotate_left");
     }
     
-    if (request.indexOf("/rotate_right_on") != -1) {
-      Serial.write("rotate_right_on\n");
-    }
-    if (request.indexOf("/rotate_right_off") != -1) {
-      Serial.write("rotate_right_off\n");
+    if (request.indexOf("/rotate_right") != -1) {
+      Serial.println("rotate_right");
     }
 
-    if (request.indexOf("/shoulder_fwd_on") != -1) {
-      Serial.write("shoulder_fwd_on\n");
-    }
-    if (request.indexOf("/shoulder_fwd_off") != -1) {
-      Serial.write("shoulder_fwd_off\n");
+    if (request.indexOf("/shoulder_fwd") != -1) {
+      Serial.println("shoulder_fwd");
     }
 
-    if (request.indexOf("/shoulder_bkd_on") != -1) {
-      Serial.write("shoulder_bkd_on\n");
-    }
-    if (request.indexOf("/shoulder_bkd_off") != -1) {
-      Serial.write("shoulder_bkd_off\n");
+    if (request.indexOf("/shoulder_bkd") != -1) {
+      Serial.println("shoulder_bkd");
     }
 
-    if (request.indexOf("/elbow_up_on") != -1) {
-      Serial.write("elbow_up_on\n");
-    }
-    if (request.indexOf("/elbow_up_off") != -1) {
-      Serial.write("elbow_up_off\n");
+    if (request.indexOf("/elbow_up") != -1) {
+      Serial.println("elbow_up");
     }
 
-    if (request.indexOf("/elbow_down_on") != -1) {
-      Serial.write("elbow_down_on\n");
-    }
-    if (request.indexOf("/elbow_down_off") != -1) {
-      Serial.write("elbow_down_off\n");
+    if (request.indexOf("/elbow_down") != -1) {
+      Serial.println("elbow_down");
     }
 
-    if (request.indexOf("/open_claw_on") != -1) {
-      Serial.write("open_claw_on\n");
-    }
-    if (request.indexOf("/open_claw_off") != -1) {
-      Serial.write("open_claw_off\n");
+    if (request.indexOf("/open_claw") != -1) {
+      Serial.println("open_claw");
     }
 
-    if (request.indexOf("/close_claw_on") != -1) {
-      Serial.write("close_claw_on\n");
-    }
-    if (request.indexOf("/close_claw_off") != -1) {
-      Serial.write("close_claw_off\n");
+    if (request.indexOf("/close_claw") != -1) {
+      Serial.println("close_claw");
     }
   }
 }
