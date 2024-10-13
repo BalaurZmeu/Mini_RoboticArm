@@ -2,9 +2,12 @@
 #include <ESP8266mDNS.h>
 #include <Servo.h>
 
-// Declaring constants
+// Declare constants
 #define DELAY 50
 #define STEP 1
+
+// Define global string variable request
+String request;
 
 // Custom class that inherits from Servo
 // and has custom properties
@@ -57,36 +60,12 @@ void setup() {
   }
 }
 
-void moveServo(servoObj, direction) {
-  if direction == "positive" {
-    while (servoObj.read() < servoObj.maxVal) {
-      servoObj.write(currVal);
-      currVal += STEP;
-      delay(DELAY);
-      if (request.indexOf("/stop") != -1) {
-        Serial.println("stop");
-        break;
-      }
-    }
-  } else if direction == "negative" {
-    while (servoObj.read() > servoObj.minVal) {
-      servoObj.write(currVal);
-      currVal -= STEP;
-      delay(DELAY);
-      if (request.indexOf("/stop") != -1) {
-        Serial.println("stop");
-        break;
-      }
-    }
-  }
-} // end moveServo
-
 void loop() {
   WiFiClient client = server.available();
   MDNS.update(); // Update the mDNS service
 
   if (client) {
-    String request = client.readStringUntil('\r');
+    request = client.readStringUntil('\r');
     client.flush();
 
     // HTML page with buttons to control the robotic arm
@@ -216,3 +195,29 @@ void loop() {
     }
   }
 }
+
+void moveServo(CustomServo& servoObj, String direction) {
+  if (direction == "positive") {
+    int currVal = servoObj.read();
+    while (currVal < servoObj.maxVal) {
+      currVal += STEP;
+      servoObj.write(currVal);
+      delay(DELAY);
+      if (request.indexOf("/stop") != -1) {
+        Serial.println("stop");
+        break;
+      }
+    }
+  } else if (direction == "negative") {
+    int currVal = servoObj.read();
+    while (currVal > servoObj.minVal) {
+      currVal -= STEP;
+      servoObj.write(currVal);
+      delay(DELAY);
+      if (request.indexOf("/stop") != -1) {
+        Serial.println("stop");
+        break;
+      }
+    }
+  }
+} // end moveServo
