@@ -3,7 +3,7 @@
 #include <Servo.h>
 
 // Declare constants
-#define DELAY 50
+#define DELAY 3
 #define STEP 1
 
 // Define global string variable request
