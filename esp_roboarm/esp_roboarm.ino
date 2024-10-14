@@ -4,7 +4,7 @@
 
 // Declare constants
 #define DELAY 3
-#define STEP 1
+#define STEP 2
 
 // Define global string variable request
 String request;
@@ -16,6 +16,7 @@ class CustomServo : public Servo {
     // Custom properties
     int minVal;
     int maxVal;
+    int currVal;
 };
 
 // Servo motor objects
@@ -35,14 +36,14 @@ void setup() {
   elbow.attach(12);
   claw.attach(16);
   
-  base.minVal = 25;
-  base.maxVal = 110;
-  shoulder.minVal = 25;
-  shoulder.maxVal = 110;
-  elbow.minVal = 25;
-  elbow.maxVal = 110;
-  claw.minVal = 25;
-  claw.maxVal = 110;
+  base.minVal = 800;
+  base.maxVal = 1800;
+  shoulder.minVal = 800;
+  shoulder.maxVal = 1800;
+  elbow.minVal = 800;
+  elbow.maxVal = 1800;
+  claw.minVal = 800;
+  claw.maxVal = 1800;
   
   Serial.begin(115200);
   
@@ -154,6 +155,11 @@ void loop() {
       );
     }
 
+    base.currVal = base.readMicroseconds();
+    shoulder.currVal = shoulder.readMicroseconds();
+    elbow.currVal = elbow.readMicroseconds();
+    claw.currVal = claw.readMicroseconds();
+
     if (request.indexOf("/rotate_left") != -1) {
       Serial.println("rotate_left");
       moveServo(base, "negative");
@@ -193,31 +199,26 @@ void loop() {
       Serial.println("close_claw");
       moveServo(claw, "negative");
     }
-  }
-}
+    
+    if (request.indexOf("/stop") != -1) {
+      Serial.println("stop");
+    }
+  } // end if (cient)
+} // end function loop
 
 void moveServo(CustomServo& servoObj, String direction) {
   if (direction == "positive") {
-    int currVal = servoObj.read();
-    while (currVal < servoObj.maxVal) {
+    if (servoObj.currVal < servoObj.maxVal) {
       currVal += STEP;
       servoObj.write(currVal);
       delay(DELAY);
-      if (request.indexOf("/stop") != -1) {
-        Serial.println("stop");
-        break;
-      }
     }
   } else if (direction == "negative") {
-    int currVal = servoObj.read();
-    while (currVal > servoObj.minVal) {
+    if (servoObj.currVal > servoObj.minVal) {
       currVal -= STEP;
       servoObj.write(currVal);
       delay(DELAY);
-      if (request.indexOf("/stop") != -1) {
-        Serial.println("stop");
-        break;
-      }
     }
   }
-} // end moveServo
+} // end function moveServo
+
