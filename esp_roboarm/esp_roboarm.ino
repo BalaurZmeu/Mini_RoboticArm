@@ -3,10 +3,13 @@
 #include <Servo.h>
 
 // Declare constants
-#define DELAY 3
-#define STEP 2
+#define DELAY 1
+#define STEP 1
 
-// Define global string variable request
+// Declare a boolean stop flag
+volatile bool stopFlag = false; 
+
+// Declare a global string variable request
 String request;
 
 // Custom class that inherits from Servo
@@ -36,14 +39,14 @@ void setup() {
   elbow.attach(12);
   claw.attach(16);
   
-  base.minVal = 800;
-  base.maxVal = 1800;
-  shoulder.minVal = 800;
-  shoulder.maxVal = 1800;
-  elbow.minVal = 800;
-  elbow.maxVal = 1800;
-  claw.minVal = 800;
-  claw.maxVal = 1800;
+  base.minVal = 20;
+  base.maxVal = 170;
+  shoulder.minVal = 20;
+  shoulder.maxVal = 170;
+  elbow.minVal = 20;
+  elbow.maxVal = 170;
+  claw.minVal = 20;
+  claw.maxVal = 170;
   
   Serial.begin(115200);
   
@@ -155,10 +158,10 @@ void loop() {
       );
     }
 
-    base.currVal = base.readMicroseconds();
-    shoulder.currVal = shoulder.readMicroseconds();
-    elbow.currVal = elbow.readMicroseconds();
-    claw.currVal = claw.readMicroseconds();
+    base.currVal = base.read();
+    shoulder.currVal = shoulder.read();
+    elbow.currVal = elbow.read();
+    claw.currVal = claw.read();
 
     if (request.indexOf("/rotate_left") != -1) {
       Serial.println("rotate_left");
@@ -201,22 +204,30 @@ void loop() {
     }
     
     if (request.indexOf("/stop") != -1) {
+      stopFlag = true;
       Serial.println("stop");
     }
   } // end if (cient)
 } // end function loop
 
 void moveServo(CustomServo& servoObj, String direction) {
+  stopFlag = false;
   if (direction == "positive") {
-    if (servoObj.currVal < servoObj.maxVal) {
-      currVal += STEP;
-      servoObj.write(currVal);
+    while (servoObj.currVal < servoObj.maxVal && !stopFlag) {
+      Serial.println(servoObj.currVal);
+      Serial.println("trying to move");
+      servoObj.currVal += STEP;
+      servoObj.write(servoObj.currVal);
+      Serial.println(servoObj.currVal);
       delay(DELAY);
     }
   } else if (direction == "negative") {
-    if (servoObj.currVal > servoObj.minVal) {
-      currVal -= STEP;
-      servoObj.write(currVal);
+    while (servoObj.currVal > servoObj.minVal  && !stopFlag) {
+      Serial.println(servoObj.currVal);
+      Serial.println("trying to move");
+      servoObj.currVal -= STEP;
+      servoObj.write(servoObj.currVal);
+      Serial.println(servoObj.currVal);
       delay(DELAY);
     }
   }
