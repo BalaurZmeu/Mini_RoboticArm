@@ -4,7 +4,7 @@
 
 // Declare constants
 #define DELAY 1
-#define STEP 1
+#define STEP 5
 
 // Declare a boolean stop flag
 volatile bool stopFlag = false; 
@@ -39,14 +39,14 @@ void setup() {
   elbow.attach(12);
   claw.attach(16);
   
-  base.minVal = 20;
-  base.maxVal = 170;
-  shoulder.minVal = 20;
-  shoulder.maxVal = 170;
-  elbow.minVal = 20;
-  elbow.maxVal = 170;
-  claw.minVal = 20;
-  claw.maxVal = 170;
+  base.minVal = 800;
+  base.maxVal = 1800;
+  shoulder.minVal = 800;
+  shoulder.maxVal = 1800;
+  elbow.minVal = 800;
+  elbow.maxVal = 1800;
+  claw.minVal = 800;
+  claw.maxVal = 1800;
   
   Serial.begin(115200);
   
@@ -158,10 +158,10 @@ void loop() {
       );
     }
 
-    base.currVal = base.read();
-    shoulder.currVal = shoulder.read();
-    elbow.currVal = elbow.read();
-    claw.currVal = claw.read();
+    base.currVal = base.readMicroseconds();
+    shoulder.currVal = shoulder.readMicroseconds();
+    elbow.currVal = elbow.readMicroseconds();
+    claw.currVal = claw.readMicroseconds();
 
     if (request.indexOf("/rotate_left") != -1) {
       Serial.println("rotate_left");
@@ -217,7 +217,7 @@ void moveServo(CustomServo& servoObj, String direction) {
       Serial.println(servoObj.currVal);
       Serial.println("trying to move");
       servoObj.currVal += STEP;
-      servoObj.write(servoObj.currVal);
+      servoObj.writeMicroseconds(servoObj.currVal);
       Serial.println(servoObj.currVal);
       delay(DELAY);
     }
@@ -226,7 +226,7 @@ void moveServo(CustomServo& servoObj, String direction) {
       Serial.println(servoObj.currVal);
       Serial.println("trying to move");
       servoObj.currVal -= STEP;
-      servoObj.write(servoObj.currVal);
+      servoObj.writeMicroseconds(servoObj.currVal);
       Serial.println(servoObj.currVal);
       delay(DELAY);
     }
